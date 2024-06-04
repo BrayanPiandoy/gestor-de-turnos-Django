@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:14.10
+    restart: always
+    container_name: postgresql
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_HOST=127.0.0.1
+      - POSTGRES_DB=database_turnos
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@correo.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  web:
+    build: .
+    container_name: pry_Django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=database_turnos
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

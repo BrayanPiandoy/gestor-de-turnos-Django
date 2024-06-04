@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalle del Turno</title>
+</head>
+<body>
+    <h1>Detalle del Turno</h1>
+    <p>Cliente: {{ turno.cliente }}</p>
+    <p>Asesor: {{ turno.asesor }}</p>
+    <p>Trámite: {{ turno.tramite }}</p>
+    <p>Fecha y Hora: {{ turno.fecha_hora }}</p>
+    <p>Estado: {{ turno.estado }}</p>
+    <a href="{% url 'editar_turno' pk=turno.pk %}">Editar Turno</a>
+    <a href="{% url 'lista_turnos' %}">Volver a la Lista</a>
+</body>
+</html>
