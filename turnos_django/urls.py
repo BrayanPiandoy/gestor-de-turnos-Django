@@ -16,13 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from turno import views
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index),
-    path('index',views.index),
+    path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('index', views.index, name='index'), 
     path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
     path('detalle_cliente/<int:pk>/', views.detalle_cliente, name='detalle_cliente'),
     path('crear_cliente/', views.crear_cliente, name='crear_cliente'),  
-    
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/',views.logout_view, name='logout'), 
+    path('crear_turno',views.crear_turno, name='crear_turno'),
 ]
