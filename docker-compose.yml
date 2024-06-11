@@ -7,7 +7,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_HOST=127.0.0.1
       - POSTGRES_DB=database_turnos
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
@@ -25,20 +24,69 @@ services:
     depends_on:
       - db
 
-  web:
-    build: .
-    container_name: pry_Django
+  web1:
+    build: ./usuarios
+    container_name: pry_Django_users
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - ./usuarios:/code
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=database_turnos
+      - POSTGRES_NAME=my_database
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
     depends_on:
       - db
+
+  web2:
+    build: ./turnos
+    container_name: pry_Django_turnos
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - ./turnos:/code
+    ports:
+      - "8001:8001"
+    environment:
+      - POSTGRES_NAME=my_database
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    depends_on:
+      - db
+
+  web3:
+    build: ./asesores
+    container_name: pry_Django_asesores
+    command: python manage.py runserver 0.0.0.0:8002
+    volumes:
+      - ./asesores:/code
+    ports:
+      - "8002:8002"
+    environment:
+      - POSTGRES_NAME=my_database
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    depends_on:
+      - db
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "81:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites:/etc/nginx/sites-available
+    depends_on:
+      - web1
+      - web2
+      - web3
+
 
 volumes:
   postgres_data:
