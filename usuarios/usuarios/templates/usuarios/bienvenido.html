@@ -81,10 +81,9 @@
 <body>
     <div class="header">
         <div>
-
             <span class="logo-text">BANCO DANIEL</span>
         </div>
-        <button class="return-btn" onclick="window.location.href='{% url 'login' %}'">Regresar</button>
+        <button class="return-btn" onclick="window.location.href='{% url 'login' %}'">SALIR</button>
     </div>
     <div class="banner">
         <div class="banner-text">
@@ -92,13 +91,15 @@
         </div>
     </div>
     <div class="button-container">
-        <button class="button" onclick="window.location.href='http://localhost:8001/'">
-            <img src="{% static 'usuarios/icono_turno.png' %}" alt="Icono de turno">&nbsp;&nbsp;ADQUIERA SU TURNO </button>
+        <button class="button" onclick="window.location.href='{% url 'adquirir_turno' cliente.numero_cedula %}'">
+            <img src="{% static 'usuarios/icono_turno.png' %}" alt="Icono de turno">&nbsp;&nbsp;ADQUIERA SU TURNO
+        </button>
         <div class="divider"></div>
         <button class="button" onclick="mostrarAlerta()">
             <img src="{% static 'usuarios/icono_reclamo.png' %}" alt="Icono de reclamo">&nbsp;&nbsp;HAGA SU RECLAMO
         </button>
     </div>
+    
 
     <script>
         function mostrarAlerta() {

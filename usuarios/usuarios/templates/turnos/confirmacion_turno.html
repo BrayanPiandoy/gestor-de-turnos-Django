@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Turno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; /* Evita el scroll horizontal */
+            background: url("{% static 'usuarios/imagen_de_fondo.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px); /* Resta la altura del header */
+            margin-top: -50px; /* Mueve el contenedor hacia arriba */
+        }
+        .card {
+        
+            width: 50%;
+            padding: 20px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            margin-top: -50px; /* Mueve el contenedor hacia arriba */
+        }
+        .button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: -50px; /* Mueve el contenedor hacia arriba */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <span class="logo-text">BANCO DANIEL</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h1 class="text-center">Confirmación de Turno</h1>
+                <hr> <!-- Línea -->
+                <p>Número de Cédula: {{ turno.numero_cedula }}</p>
+                <p>Nombre: {{ turno.nombre }}</p>
+                <p>Apellido: {{ turno.apellido }}</p>
+                <p>Tipo de Turno: {{ turno.tipo_turno }}</p>
+                <p>Número de Turno: {{ turno.numero_turno }}</p>
+                <p>Fecha y Hora: {{ turno.fecha_hora }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button type="button" class="btn btn-warning" onclick="window.location.href='{% url 'login' %}'">Finalizar</button>
+    </div>
+    
+</body>
+</html>
