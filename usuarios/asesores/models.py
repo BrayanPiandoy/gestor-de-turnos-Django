@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.conf import settings
+from usuarios.models import Cliente, Turno
+from django.db import models
+from django.core.validators import MinLengthValidator
+from django.conf import settings
 
 class AsesorManager(BaseUserManager):
     def create_user(self, cedula, name, last_name, password=None):
@@ -50,4 +55,36 @@ class Asesor(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
     
+
+class AsesorArea(models.Model):
+    asesor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    area = models.CharField(max_length=20, choices=Turno.TIPO_TURNO_CHOICES)
+
+    def __str__(self):
+        return f'{self.asesor} - {self.get_area_display()}'
+
+
+
+class TurnoPendiente(models.Model):
+    asesor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    cliente_cedula = models.CharField(max_length=20, validators=[MinLengthValidator(8)], verbose_name='Cédula del Cliente')
+    nombre_cliente = models.CharField(max_length=100, verbose_name='Nombre del Cliente')
+    apellido_cliente = models.CharField(max_length=100, verbose_name='Apellido del Cliente')
+    area = models.CharField(max_length=20, choices=Turno.TIPO_TURNO_CHOICES)
+    estado = models.CharField(max_length=20, default='pendiente')
+    fecha_hora = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.nombre_cliente} {self.apellido_cliente} - {self.area} ({self.fecha_hora})'
+
+
+class TurnoAtendido(models.Model):
+    asesor = models.ForeignKey(Asesor, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    area = models.CharField(max_length=20, choices=Turno.TIPO_TURNO_CHOICES)
+    estado = models.CharField(max_length=20, default='atendido')
+    fecha_hora = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.cliente.numero_cedula} - {self.get_area_display()} - {self.estado}'
 

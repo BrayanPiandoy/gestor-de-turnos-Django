@@ -1,0 +1,19 @@
+<!-- turnos_pendientes.html -->
+
+<h1>Turnos Pendientes en {{ area }}</h1>
+
+{% if turnos %}
+    <ul>
+        {% for turno in turnos %}
+            <li>
+                {{ turno.nombre_cliente }} {{ turno.apellido_cliente }} - {{ turno.fecha_hora }}
+                <form action="{% url 'cambiar_estado_turno' turno.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Marcar como atendido</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay turnos pendientes en esta área.</p>
+{% endif %}

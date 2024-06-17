@@ -42,8 +42,13 @@ INSTALLED_APPS = [
     'asesores',
 ]
 
+# URL donde los usuarios deben iniciar sesión si intentan acceder a una vista protegida sin estar autenticados.
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'pagina_asesor'
+
+# URL a la que se redirige al usuario después de iniciar sesión correctamente.
+LOGIN_REDIRECT_URL = 'select_area'  # Ajusta según tu aplicación
+
+# Nombre completo del modelo de usuario personalizado
 AUTH_USER_MODEL = 'asesores.Asesor'
 
 MIDDLEWARE = [

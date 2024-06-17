@@ -1,4 +1,6 @@
 from django import forms
+
+from usuarios.models import Turno
 from .models import Asesor
 
 class AsesorCreationForm(forms.ModelForm):
@@ -26,3 +28,6 @@ class AsesorCreationForm(forms.ModelForm):
 class AsesorLoginForm(forms.Form):
     cedula = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+    
+class AreaSelectionForm(forms.Form):
+    area = forms.ChoiceField(choices=Turno.TIPO_TURNO_CHOICES, required=True)
