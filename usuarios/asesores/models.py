@@ -72,6 +72,7 @@ class TurnoPendiente(models.Model):
     apellido_cliente = models.CharField(max_length=100, verbose_name='Apellido del Cliente')
     area = models.CharField(max_length=20, choices=Turno.TIPO_TURNO_CHOICES)
     estado = models.CharField(max_length=20, default='pendiente')
+    numero_turno = models.CharField(max_length=10, unique=True)
     fecha_hora = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -84,6 +85,7 @@ class TurnoAtendido(models.Model):
     area = models.CharField(max_length=20, choices=Turno.TIPO_TURNO_CHOICES)
     estado = models.CharField(max_length=20, default='atendido')
     fecha_hora = models.DateTimeField()
+    numero_turno = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
         return f'{self.cliente.numero_cedula} - {self.get_area_display()} - {self.estado}'

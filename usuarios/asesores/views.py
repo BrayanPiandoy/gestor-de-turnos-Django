@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
-from  usuarios.models import Cliente
+from  usuarios.models import Cliente, Turno
 from .forms import AreaSelectionForm, AsesorCreationForm, AsesorLoginForm
 from .models import Asesor, AsesorArea, TurnoAtendido, TurnoPendiente
 
@@ -69,7 +69,8 @@ def cambiar_estado_turno(request, turno_pendiente_id):
             cliente=Cliente.objects.get(numero_cedula=turno_pendiente.cliente_cedula),
             area=turno_pendiente.area,
             estado='atendido',
-            fecha_hora=turno_pendiente.fecha_hora
+            fecha_hora=turno_pendiente.fecha_hora,
+            numero_turno = turno_pendiente.numero_turno
         )
 
         # Eliminar el turno pendiente después de crear el turno atendido

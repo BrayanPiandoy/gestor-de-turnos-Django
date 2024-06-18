@@ -68,7 +68,8 @@ def adquirir_turno_view(request, numero_cedula):
                 apellido_cliente=cliente.apellido,
                 area=turno.tipo_turno,
                 estado='pendiente',
-                fecha_hora=turno.fecha_hora
+                fecha_hora=turno.fecha_hora,
+                numero_turno=turno.numero_turno
             )
 
             return redirect('confirmacion_turno', numero_cedula=turno.numero_cedula)

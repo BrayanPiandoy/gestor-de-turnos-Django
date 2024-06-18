@@ -1,19 +1,83 @@
-<!-- turnos_pendientes.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Turnos Pendientes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .container {
+            margin: 20px;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+        .return-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-details {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <span class="logo-text">Asesor: {{ request.user.name}} {{ request.user.last_name }}</span>
+        </div>
+        <button class="return-btn" onclick="window.location.href='{% url 'select_area' %}'">Regresar</button>
+    </div>
 
-<h1>Turnos Pendientes en {{ area }}</h1>
-
-{% if turnos %}
-    <ul>
-        {% for turno in turnos %}
-            <li>
-                {{ turno.nombre_cliente }} {{ turno.apellido_cliente }} - {{ turno.fecha_hora }}
-                <form action="{% url 'cambiar_estado_turno' turno.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Marcar como atendido</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No hay turnos pendientes en esta área.</p>
-{% endif %}
+    <div class="container">
+        <h1>Turnos Pendientes en {{ area }}</h1>
+        <ul class="list-group">
+            {% for turno in turnos %}
+                <li class="list-group-item">
+                    <div class="item-details">
+                        <strong>Número de Turno:</strong> {{ turno.numero_turno }} <br>
+                        <strong>Cliente:</strong> {{ turno.nombre_cliente }} {{ turno.apellido_cliente }} <br>
+                        <strong>Fecha y Hora:</strong> {{ turno.fecha_hora }} <br>
+                    </div>
+                    <form method="post" action="{% url 'cambiar_estado_turno' turno.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Marcar como atendido</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
