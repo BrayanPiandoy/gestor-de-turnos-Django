@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Turnos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+        }
+        .turnos-container {
+            width: 50%;
+            padding: 20px;
+            margin: 20px;
+        }
+        .turnos-list {
+            /* Remove max-height and overflow-y to disable scrolling */
+        }
+        .header {
+            background-color: black;
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-size: cover; /* Ajustar la imagen para cubrir el contenedor */
+            background-position: center; /* Centrar la imagen */
+          
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <span class="logo-text">BANCO DANIEL</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="turnos-container">
+            <h2>Turnos Pendientes</h2>
+            <div id="turnos-pendientes" class="turnos-list"></div>
+        </div>
+        <div class="turnos-container">
+            <h2>Turnos Atendidos</h2>
+            <div id="turnos-atendidos" class="turnos-list"></div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrftoken = getCookie('csrftoken');
+        
+        function cargarTurnos() {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cargar_turnos' %}",
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                success: function(data) {
+                    $('#turnos-pendientes').empty();
+                    $('#turnos-atendidos').empty();
+        
+                    // Limit to the last 3 entries
+                    const turnosPendientes = data.turnos_pendientes.slice(-3);
+                    const turnosAtendidos = data.turnos_atendidos.slice(-5);
+        
+                    turnosPendientes.forEach(function(turno) {
+                        $('#turnos-pendientes').append(
+                            `<div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Número de Turno: ${turno.numero_turno}</h5>
+                                    <p class="card-text">Cliente: ${turno.nombre_cliente} ${turno.apellido_cliente}</p>
+                                    <p class="card-text">Fecha y Hora: ${turno.fecha_hora}</p>
+                                </div>
+                            </div>`
+                        );
+                    });
+        
+                    turnosAtendidos.forEach(function(turno) {
+                        $('#turnos-atendidos').append(
+                            `<div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Número de Turno: ${turno.numero_turno}</h5>
+                                </div>
+                            </div>`
+                        );
+                    });
+                },
+                error: function(error) {
+                    console.log("Error al cargar los turnos", error);
+                }
+            });
+        }
+        
+        $(document).ready(function() {
+            cargarTurnos();
+            setInterval(cargarTurnos, 1000);  // Recarga los turnos cada 5 segundos
+        });
+        
+    </script>
+</body>
+</html>

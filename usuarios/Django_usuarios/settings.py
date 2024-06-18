@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'usuarios',
     'asesores',
+    'turnos',
 ]
 
 # URL donde los usuarios deben iniciar sesión si intentan acceder a una vista protegida sin estar autenticados.

@@ -22,7 +22,7 @@ class Turno(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     tipo_turno = models.CharField(max_length=20, choices=TIPO_TURNO_CHOICES)
-    numero_turno = models.CharField(max_length=10, unique=True)
+    numero_turno = models.CharField(max_length=10)
     fecha_hora = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
