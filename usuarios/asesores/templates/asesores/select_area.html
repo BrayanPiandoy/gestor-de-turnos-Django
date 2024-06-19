@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Seleccionar Área</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -50,20 +51,38 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .section-title {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .section-title:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background-color: yellow;
+        }
+        .icon {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div>
-            <span class="logo-text">Asesor: {{ request.user.name}} {{ request.user.last_name }}</span>
-            <span class="logo-text"></span>
+            <span class="logo-text">Asesor: {{ request.user.name }} {{ request.user.last_name }}</span>
         </div>
         <button class="return-btn" onclick="window.location.href='{% url 'login_asesor' %}'">SALIR</button>
     </div>
 
     <div class="container">
         <div class="card">
-            <h1 class="text-center">Seleccionar Área</h1>
+            <h1 class="section-title"><i class="bi bi-geo-alt icon"></i>Seleccionar Área</h1>
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
